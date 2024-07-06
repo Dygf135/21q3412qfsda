@@ -24,7 +24,6 @@ jobs:
 
     - name: Install Chromium for Puppeteer
       run: |
-        export PUPPETEER_SKIP_DOWNLOAD="false"
         npx puppeteer install
 
     - name: Run Screenshot Script

@@ -259,7 +259,7 @@ async function run() {
   await page.waitForFunction(
     () => {
       const recaptchaStatus = document
-        .querySelector('iframe.querySelector('iframe[src*="api2/anchor"]')
+      .querySelector('iframe[src*="api2/anchor"]')
         .contentWindow.document.querySelector("#recaptcha-accessible-status");
       return (
         recaptchaStatus &&

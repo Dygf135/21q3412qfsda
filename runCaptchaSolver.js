@@ -223,57 +223,57 @@ async function run() {
               ifqSelector(AUDIO_ERROR_MESSAGE).innerText.length > 0 &&
               ifqSelector(RELOAD_BUTTON) &&
               !ifqSelector(RELOAD_BUTTON).disabled)
-          ) {
-            ifqSelector(RELOAD_BUTTON).click();
-          } else if (
-            !waitingForAudioResponse &&
-            ifqSelector(RESPONSE_FIELD) &&
-            !isHidden(ifqSelector(RESPONSE_FIELD)) &&
-            !ifqSelector(AUDIO_RESPONSE).value &&
-            ifqSelector(AUDIO_SOURCE) &&
-            ifqSelector(AUDIO_SOURCE).src &&
-            ifqSelector(AUDIO_SOURCE).src.length > 0 &&
-            audioUrl != ifqSelector(AUDIO_SOURCE).src &&
-            requestCount <= MAX_ATTEMPTS
-          ) {
-            waitingForAudioResponse = true;
-            audioUrl = ifqSelector(AUDIO_SOURCE).src;
-            getTextFromAudio(audioUrl);
+            ) {
+              ifqSelector(RELOAD_BUTTON).click();
+            } else if (
+              !waitingForAudioResponse &&
+              ifqSelector(RESPONSE_FIELD) &&
+              !isHidden(ifqSelector(RESPONSE_FIELD)) &&
+              !ifqSelector(AUDIO_RESPONSE).value &&
+              ifqSelector(AUDIO_SOURCE) &&
+              ifqSelector(AUDIO_SOURCE).src &&
+              ifqSelector(AUDIO_SOURCE).src.length > 0 &&
+              audioUrl != ifqSelector(AUDIO_SOURCE).src &&
+              requestCount <= MAX_ATTEMPTS
+            ) {
+              waitingForAudioResponse = true;
+              audioUrl = ifqSelector(AUDIO_SOURCE).src;
+              getTextFromAudio(audioUrl);
+            }
           }
-        }
-        if (
-          qSelector(DOSCAPTCHA) &&
-          qSelector(DOSCAPTCHA).innerText.length > 0
-        ) {
-          console.log("Automated Queries Detected");
+          if (
+            qSelector(DOSCAPTCHA) &&
+            qSelector(DOSCAPTCHA).innerText.length > 0
+          ) {
+            console.log("Automated Queries Detected");
+            clearInterval(startInterval);
+          }
+        } catch (err) {
+          console.log(err.message);
+          console.log("An error occurred while solving. Stopping the solver.");
           clearInterval(startInterval);
         }
-      } catch (err) {
-        console.log(err.message);
-        console.log("An error occurred while solving. Stopping the solver.");
-        clearInterval(startInterval);
-      }
-    }, 10000);
-  });
-
-  await page.waitForFunction(
-    () => {
-      const recaptchaStatus = document
-        .querySelector('iframe[src*="api2/anchor"]')
-        .contentWindow.document.querySelector("#recaptcha-accessible-status");
-      return (
-        recaptchaStatus &&
-        recaptchaStatus.innerText.includes("You are verified")
-      );
-    },
-    { timeout: 60000 }
-  );
-
-  // Take a screenshot after CAPTCHA is solved
-  await page.screenshot({ path: "screenshot.png" });
-  console.log("Screenshot taken after CAPTCHA is solved.");
-
-  await browser.close();
-}
-
-run();
+      }, 10000);
+    });
+  
+    await page.waitForFunction(
+      () => {
+        const recaptchaStatus = document
+          .querySelector('iframe[src*="api2/anchor"]')
+          .contentWindow.document.querySelector("#recaptcha-accessible-status");
+        return (
+          recaptchaStatus &&
+          recaptchaStatus.innerText.includes("You are verified")
+        );
+      },
+      { timeout: 60000 }
+    );
+  
+    // Take a screenshot after CAPTCHA is solved
+    await page.screenshot({ path: "screenshot.png" });
+    console.log("Screenshot taken after CAPTCHA is solved.");
+  
+    await browser.close();
+  }
+  
+  run();

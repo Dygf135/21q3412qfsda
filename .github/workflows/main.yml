@@ -19,11 +19,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install dependencies
+    - name: Install Dependencies
       run: npm install
+      env:
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
 
-    - name: Set up Puppeteer
-      uses: buildkite/puppeteer-headful@v1
+    - name: Puppeteer Headful
+      uses: mujo-code/puppeteer-headful@18.9.0
+      env:
+        CI: "true"
 
     - name: Run CAPTCHA Solver
       run: node runCaptchaSolver.js

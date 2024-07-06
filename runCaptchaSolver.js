@@ -74,7 +74,7 @@ async function run() {
       "https://engageub1.pythonanywhere.com",
     ];
     var latencyList = Array(serversList.length).fill(10000);
-    // Check for visibility && Click the check box
+
     function isHidden(el) {
       return el.offsetParent === null;
     }
@@ -83,7 +83,6 @@ async function run() {
       var minLatency = 100000;
       var url = "";
 
-      // Selecting the last/latest server by default if latencies are equal
       for (let k = 0; k < latencyList.length; k++) {
         if (latencyList[k] <= minLatency) {
           minLatency = latencyList[k];
@@ -114,7 +113,6 @@ async function run() {
             if (!!response && !!response.data) {
               var responseText = response.data;
               console.log("responseText");
-              // Validate Response for error messages or html elements
               if (
                 responseText == "0" ||
                 responseText.includes("<") ||
@@ -122,7 +120,6 @@ async function run() {
                 responseText.length < 2 ||
                 responseText.length > 50
               ) {
-                // Invalid Response, Reload the captcha
                 console.log("Invalid Response. Retrying..");
               } else if (
                 !!ifqSelector(AUDIO_SOURCE) &&
@@ -167,7 +164,6 @@ async function run() {
           var end = new Date().getTime();
           var milliseconds = end - start;
           console.log(milliseconds);
-          // For large values use Hashmap
           for (let i = 0; i < serversList.length; i++) {
             if (url == serversList[i]) {
               latencyList[i] = milliseconds;
@@ -185,7 +181,6 @@ async function run() {
       }
     }
 
-    // Solve the captcha using audio
     var startInterval = setInterval(function () {
       try {
         if (
@@ -193,11 +188,9 @@ async function run() {
           !!qSelector(CHECK_BOX) &&
           !isHidden(qSelector(CHECK_BOX))
         ) {
-          //console.log("checkbox clicked");
           qSelector(CHECK_BOX).click();
           checkBoxClicked = true;
         }
-        // Check if the captcha is solved
         if (
           !!qSelector(RECAPTCHA_STATUS) &&
           qSelector(RECAPTCHA_STATUS).innerText != recaptchaInitialStatus
@@ -217,7 +210,6 @@ async function run() {
             !isHidden(ifqSelector(AUDIO_BUTTON)) &&
             !!ifqSelector(IMAGE_SELECT)
           ) {
-            // console.log("Audio button clicked");
             ifqSelector(AUDIO_BUTTON).click();
           }
           if (
@@ -247,11 +239,8 @@ async function run() {
             waitingForAudioResponse = true;
             audioUrl = ifqSelector(AUDIO_SOURCE).src;
             getTextFromAudio(audioUrl);
-          } else {
-            // Waiting
           }
         }
-        // Stop solving when Automated queries message is shown
         if (
           qSelector(DOSCAPTCHA) &&
           qSelector(DOSCAPTCHA).innerText.length > 0
@@ -267,11 +256,10 @@ async function run() {
     }, 10000);
   });
 
-  // Wait for the CAPTCHA to be solved
   await page.waitForFunction(
-touch    () => {
+    () => {
       const recaptchaStatus = document
-        .querySelector('iframe[src*="api2/anchor"]')
+        .querySelector('iframe.querySelector('iframe[src*="api2/anchor"]')
         .contentWindow.document.querySelector("#recaptcha-accessible-status");
       return (
         recaptchaStatus &&

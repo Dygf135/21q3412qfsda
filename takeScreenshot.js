@@ -9,7 +9,7 @@ async function run() {
     args: [
       '--no-sandbox'
     ],
-    executablePath: puppeteer.executablePath(), // Ensure this is set correctly
+    executablePath: puppeteer.executablePath(),
   });
 
   const page = await browser.newPage();

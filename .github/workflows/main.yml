@@ -22,9 +22,8 @@ jobs:
     - name: Install Dependencies
       run: npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 
-    - name: Install Chromium for Puppeteer
-      run: |
-        npx puppeteer install
+    - name: Install Chromium
+      run: node node_modules/puppeteer/install.js
 
     - name: Run Screenshot Script
       run: node takeScreenshot.js

@@ -22,8 +22,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Install Puppeteer browsers
-      run: npx puppeteer install
+    - name: Set up Puppeteer
+      uses: buildkite/puppeteer-headful@v1
 
     - name: Run CAPTCHA Solver
       run: node runCaptchaSolver.js

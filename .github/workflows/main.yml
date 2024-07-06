@@ -24,10 +24,8 @@ jobs:
       env:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
 
-    - name: Puppeteer Headful
-      uses: mujo-code/puppeteer-headful@18.9.0
-      env:
-        CI: "true"
+    - name: Install Chromium for Puppeteer
+      run: node node_modules/puppeteer/install.js
 
     - name: Run CAPTCHA Solver
       run: node runCaptchaSolver.js
